@@ -1,0 +1,20 @@
+---
+import type { ImageMetadata } from 'astro';
+import products from '../data/products.json';
+
+type Product = (typeof products)[number];
+type Props = { product: Product; image: ImageMetadata; categories: string };
+const { product, image, categories } = Astro.props;
+---
+
+<article class="product" id={product.id} data-categories={categories}>
+  <div class="product-image"><img src={image.src} alt={product.name} width={image.width} height={image.height} loading="lazy" /><span class="product-tag">{product.tag}</span></div>
+  <div class="product-meta"><div><h3>{product.name}</h3><small>Personalizável</small></div><div class="product-price">{product.price}</div></div>
+  <div class="product-details-always">
+    <p>{product.description}</p>
+    <p>{product.personalization}</p>
+    <p><strong>{product.deadline}</strong></p>
+    <p><strong>Pagamento:</strong>{product.payment.replace('Pagamento:', '')}</p>
+    <a class="button" href={product.whatsapp} target="_blank" rel="noopener noreferrer">Quero este modelo →</a>
+  </div>
+</article>

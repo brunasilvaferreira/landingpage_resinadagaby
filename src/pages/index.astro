@@ -1,0 +1,79 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import ProductCard from '../components/ProductCard.astro';
+import products from '../data/products.json';
+import hero from '../assets/hero.png';
+import heroBackground from '../assets/hero-background.png';
+import lotusMark from '../assets/lotus-mark.png';
+import editorial from '../assets/editorial.jpg';
+import '../styles/global.css';
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>('../assets/produto-*.jpg', { eager: true });
+const categoryFor = (name: string, tag: string) => {
+  const categories = [tag.includes('15 cm') ? '15' : '19'];
+  if (/Sagrada Família|Até que Ele Volte/i.test(name)) categories.push('religiosos');
+  if (/Concha|Aquarela|Imagem Colorida|Correntinha/i.test(name)) categories.push('especiais');
+  return categories.join(' ');
+};
+---
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Porta-alianças artesanais em resina. Resina da Gabi, João Pessoa - PB."><title>Resina da Gabi | Porta-alianças</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+
+
+
+
+</head><body>
+
+<main>
+<section class="hero-desktop" id="inicio" aria-labelledby="hero-title">
+  <Image class="hero-desktop-bg" src={heroBackground} alt="" format="webp" width={1672} quality={82} priority />
+  <div class="hero-desktop-content">
+    <div class="hero-desktop-brand">
+      <Image src={lotusMark} alt="" format="webp" width={114} class="hero-lotus" />
+      <p class="hero-brand-name">RESINA DA GABI</p>
+      <p class="hero-brand-tagline">eternizando momentos</p>
+      <div class="hero-divider" aria-hidden="true"><span>♥</span></div>
+    </div>
+    <div class="hero-desktop-copy">
+      <h1 id="hero-title">O seu <em>sim</em><br />em uma peça<br />para sempre.</h1>
+      <p>Porta-alianças em resina, feitos à mão, para eternizar um dos momentos mais especiais da sua história.</p>
+      <a class="hero-button" href="#colecao">VER A COLEÇÃO <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="hero-desktop-features" aria-label="Destaques">
+      <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 27 4.8 15.7C-1.7 9.2 8.1.3 16 8.5c7.9-8.2 17.7.7 11.2 7.2L16 27Z" /></svg><small>Feito em<br />João Pessoa</small></span>
+      <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h17v14H3zM20 13h5l4 5v4h-9z"/><circle cx="9" cy="24" r="2"/><circle cx="25" cy="24" r="2"/></svg><small>Enviamos para<br />todo o Brasil</small></span>
+      <span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 13h24v4H4zM6 17h20v11H6zM16 13v15M16 13c-8-1-10-8-6-9 3-1 6 4 6 9Zm0 0c8-1 10-8 6-9-3-1-6 4-6 9Z"/></svg><small>Peças<br />personalizadas</small></span>
+    </div>
+  </div>
+</section>
+<section class="hero-real hero-mobile" aria-label="Resina da Gabi — porta-alianças artesanais"><img src={hero.src} alt="O seu sim em uma peça para sempre. Porta-alianças em resina feitos à mão. Feito em João Pessoa, envio para todo o Brasil e peças personalizadas."><a class="hero-real-cta" href="#colecao" aria-label="Ver a coleção"></a></section>
+<section class="intro"><p class="eyebrow">RESINA DA GABI</p><h2>Peças para guardar<br><em>mais do que alianças.</em></h2><p>Cada modelo foi pensado para fazer parte da cerimônia e continuar contando a história do casal depois dela.</p></section>
+<section class="collection" id="colecao"><div class="section-head"><div><p class="eyebrow">A COLEÇÃO</p><h2>Escolha o seu modelo.</h2></div><p>13 modelos autorais para diferentes estilos de casamento.</p></div><div class="filters" role="group" aria-label="Filtrar modelos"><a class="active" href="#productGrid" data-filter="todos" aria-current="true">Todos os 13 modelos</a><a href="#produto-11" data-filter="15">15 cm</a><a href="#produto-1" data-filter="19">19 cm</a><a href="#produto-3" data-filter="religiosos">Religiosos</a><a href="#produto-12" data-filter="especiais">Especiais</a></div><div class="grid" id="productGrid">
+{products.map((product) => {
+  const image = imageModules[`../assets/${product.image}`]?.default;
+  if (!image) throw new Error(`Imagem não encontrada: ${product.image}`);
+  return <ProductCard product={product} image={image} categories={categoryFor(product.name, product.tag)} />;
+})}
+</div></section>
+<section class="editorial"><div class="editorial-image"><img src={editorial.src} alt="Noiva segurando porta-alianças preto"></div><div class="editorial-copy"><p class="eyebrow">DO “SIM” PARA SEMPRE</p><h2>Um detalhe do casamento que continua com vocês.</h2><p>Depois de levar as alianças até o altar, sua peça se transforma em uma lembrança delicada de um dia que merece permanecer.</p><a href="#colecao">Encontrar meu porta-alianças →</a></div></section>
+<section class="how" id="como"><p class="eyebrow">COMO ENCOMENDAR</p><h2>Simples, pessoal e feito com carinho.</h2><div class="steps"><article><b>01</b><h3>Escolha o modelo</h3><p>Navegue pela coleção e encontre o design que combina com o seu casamento.</p></article><article><b>02</b><h3>Confira os detalhes</h3><p>Veja tamanho, personalizações disponíveis, acabamento e prazo de produção.</p></article><article><b>03</b><h3>Finalize seu pedido</h3><p>Fale com a Gabi pelo WhatsApp, informe os dados para personalização e escolha a forma de pagamento: <strong>PIX ou cartão de crédito através de link de pagamento.</strong></p></article><article><b>04</b><h3>Aguarde sua peça</h3><p>Sua encomenda é produzida artesanalmente e enviada para você.</p></article></div></section>
+<section class="contact" id="contato"><p class="eyebrow">ATENDIMENTO</p><h2>Seu porta-alianças começa aqui.</h2><p>Segunda a sexta · 9h às 12h e 14h às 18h<br>João Pessoa · PB · Enviamos para todo o Brasil</p><p><strong>Formas de pagamento:</strong> PIX ou cartão de crédito por link de pagamento.</p><div><a class="button" href="https://wa.me/5583993457897" target="_blank" rel="noopener">Falar pelo WhatsApp</a><a class="ghost" href="https://instagram.com/resinadagabi_" target="_blank" rel="noopener">@resinadagabi_</a></div></section>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-filter]').forEach((filter) => {
+    filter.addEventListener('click', (event) => {
+      event.preventDefault();
+      const chosen = filter.dataset.filter;
+      document.querySelectorAll<HTMLAnchorElement>('[data-filter]').forEach((item) => {
+        const active = item === filter;
+        item.classList.toggle('active', active);
+        if (active) item.setAttribute('aria-current', 'true');
+        else item.removeAttribute('aria-current');
+      });
+      document.querySelectorAll<HTMLElement>('.product[data-categories]').forEach((card) => {
+        card.hidden = chosen !== 'todos' && !card.dataset.categories?.split(' ').includes(chosen ?? '');
+      });
+    });
+  });
+</script></main><footer><div class="footer-brand">Resina da Gabi <small>Eternizando momentos</small></div><p>Porta-alianças artesanais em resina.</p><p>João Pessoa · PB</p></footer>
+</body></html>
